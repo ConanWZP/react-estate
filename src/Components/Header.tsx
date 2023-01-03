@@ -25,7 +25,7 @@ const Header = () => {
                             <Link to={'/offers'}>Offers</Link>
                         </li>
                         <li className={`py-[10px]  text-gray-400 font-semibold
-                        ${location.pathname === '/login' ? 'border-b-[3px] border-red-500 text-black' : ''}`}>
+                        ${location.pathname === '/login' || location.pathname === '/register' ? 'border-b-[3px] border-red-500 text-black' : ''}`}>
                             <Link to={'/login'}>Login</Link>
                         </li>
                     </ul>
