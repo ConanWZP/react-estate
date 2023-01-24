@@ -17,7 +17,7 @@ const Home = () => {
         const getLastDiscounts = async () => {
             const collectionRef = collection(database, 'advertisements')
 
-            const quer = query(collectionRef, where('discount', '==', false),
+            const quer = query(collectionRef, where('discount', '==', true),
             orderBy('createdAt', 'desc'), limit(4));
 
             const querSnap = await getDocs(quer)
