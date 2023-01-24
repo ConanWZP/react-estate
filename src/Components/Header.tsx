@@ -1,11 +1,32 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import logo from './../assets/logo.png'
-import {Link, Navigate, useLocation, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import {auth} from "../firebaseConfig";
+import {useAuthState} from "../hooks/useAuthState";
+import {onAuthStateChanged} from "firebase/auth";
+import {useAppSelector} from "../hooks/reduxHooks";
 
 const Header = () => {
 
     const location = useLocation()
     const navigate = useNavigate()
+
+    const {isAuth} = useAppSelector(state => state.auth)
+
+
+
+    /*const [loginState, setLoginState] = useState('Login')*/
+
+    /*useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setLoginState('Profile')
+            } else {
+                setLoginState('Login')
+            }
+        })
+    }, [auth])*/
+
 
 
     return (
@@ -22,12 +43,34 @@ const Header = () => {
                         </li>
                         <li className={`py-[10px]  text-gray-400 font-semibold
                         ${location.pathname === '/offers' ? 'border-b-[3px] border-red-500 text-black' : ''}`}>
-                            <Link to={'/offers'}>Offers</Link>
+                            <Link to={'/offers'}>Discounts</Link>
                         </li>
-                        <li className={`py-[10px]  text-gray-400 font-semibold
+                        {/* {
+                            loginState === 'Profile' &&
+                            <li className={`py-[10px]  text-gray-400 font-semibold
+                        ${location.pathname === '/profile' ? 'border-b-[3px] border-red-500 text-black' : ''}`}>
+                                <Link to={'/profile'}>Profile</Link>
+                            </li>
+                        }
+                        {
+                            loginState === 'Login' &&
+                                <li className={`py-[10px]  text-gray-400 font-semibold
                         ${location.pathname === '/login' || location.pathname === '/register' ? 'border-b-[3px] border-red-500 text-black' : ''}`}>
-                            <Link to={'/login'}>Login</Link>
-                        </li>
+                                    <Link to={'/login'}>Login</Link>
+                                </li>
+                        }*/}
+                        {
+                            isAuth ?
+                                <li className={`py-[10px]  text-gray-400 font-semibold
+                        ${location.pathname === '/profile' ? 'border-b-[3px] border-red-500 text-black' : ''}`}>
+                                    <Link to={'/profile'}>Profile</Link>
+                                </li>
+                                :
+                                <li className={`py-[10px]  text-gray-400 font-semibold
+                        ${location.pathname === '/login' || location.pathname === '/register' ? 'border-b-[3px] border-red-500 text-black' : ''}`}>
+                                    <Link to={'/login'}>Login</Link>
+                                </li>
+                        }
                     </ul>
                 </div>
             </header>

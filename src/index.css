@@ -5,3 +5,25 @@
 body {
     background-color: rgba(210, 236, 248, 0.58);
 }
+
+
+.swiper-button-next:after,
+.swiper-button-prev:after{
+    color: #a5d7d3;
+}
+
+.swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
+    background: #a5d7d3 !important;
+}
+
+
+/* remove scroll bar in Chrome */
+html::-webkit-scrollbar{
+    display: none;
+}
+
+
+/* remove scroll bar in FireFox */
+html {
+    scrollbar-width: none;
+}

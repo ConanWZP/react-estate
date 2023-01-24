@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
-import ShowHidePassword from "../Components/ShowHidePassword/ShowHidePassword";
+import React, {FormEvent, useState} from 'react';
+import {sendPasswordResetEmail} from 'firebase/auth'
 import {Link} from "react-router-dom";
 import GoogleAuth from "../Components/GoogleAuth";
+import {toast} from "react-toastify";
+import { auth } from '../firebaseConfig';
 
 const RestorePassword = () => {
     const [formData, setFormData] = useState({
@@ -18,7 +20,17 @@ const RestorePassword = () => {
         })
     }
 
-    console.log(formData)
+    const handleSubmitRestore = async (e: FormEvent) => {
+        e.preventDefault()
+        try {
+            const result = await sendPasswordResetEmail(auth, email)
+            toast.success('Please check your email')
+
+        } catch (e: any) {
+            toast.error(e.message)
+        }
+
+    }
 
     return (
         <section className={'max-w-[1280px] mx-auto px-[20px] max-[960px]:px-[8px]'}>
@@ -33,7 +45,7 @@ const RestorePassword = () => {
                 </div>
                 <div
                     className={'w-[380px] flex-col flex gap-[10px] items-center mb-[25px] max-w-[500px] max-[960px]:gap-[6px]'}>
-                    <form className={'flex-col flex gap-[10px] items-center max-[960px]:gap-[8px]'}>
+                    <form onSubmit={handleSubmitRestore} className={'flex-col flex gap-[10px] items-center max-[960px]:gap-[8px]'}>
                         <div>
                             <input value={email} name={'email'} placeholder={'Email'}
                                    onChange={(e: any) => handleChange(e)} type={'email'}

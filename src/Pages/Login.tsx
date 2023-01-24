@@ -1,10 +1,14 @@
-import React, {FormEventHandler, FormHTMLAttributes, useState} from 'react';
-import {Link} from "react-router-dom";
+import React, {FormEvent, FormEventHandler, FormHTMLAttributes, useState} from 'react';
+import {Link, useNavigate} from "react-router-dom";
 import ShowHidePassword from "../Components/ShowHidePassword/ShowHidePassword";
 import GoogleAuth from "../Components/GoogleAuth";
+import {toast} from "react-toastify";
+import {signInWithEmailAndPassword} from 'firebase/auth';
+import {auth} from "../firebaseConfig";
 
 const Login = () => {
 
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -20,7 +24,25 @@ const Login = () => {
         })
     }
     const [isShow, setIsShow] = useState(false)
-    console.log(formData)
+
+
+    const handleSubmitLogin = async (e: FormEvent) => {
+        e.preventDefault()
+        try {
+
+         const result =  await signInWithEmailAndPassword(auth, email, password)
+
+            if (result.user) {
+
+                toast.success('You signed in')
+                navigate('/')
+            }
+
+        } catch (e:any) {
+            toast.error(e.message)
+        }
+    }
+
 
     return (
         <section className={'max-w-[1280px] mx-auto px-[20px] max-[960px]:px-[8px]'}>
@@ -35,7 +57,7 @@ const Login = () => {
                 </div>
                 <div
                     className={'w-[380px] flex-col flex gap-[10px] items-center mb-[25px] max-w-[500px] max-[960px]:gap-[6px]'}>
-                    <form className={'flex-col flex gap-[10px] items-center max-[960px]:gap-[8px]'}>
+                    <form onSubmit={handleSubmitLogin} className={'flex-col flex gap-[10px] items-center max-[960px]:gap-[8px]'}>
                         <div>
                             <input value={email} name={'email'} placeholder={'Email'}
                                    onChange={(e: any) => handleChange(e)} type={'email'}
